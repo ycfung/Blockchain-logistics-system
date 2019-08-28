@@ -5,6 +5,7 @@
 ## 1.information of Transaction Family
 
 Family name = 'pacel_chain'
+
 version = '1.0'
 
 
@@ -33,7 +34,9 @@ PC_NAMESPACE = hashlib.sha512('pacel_chain'.encode("utf-8")).hexdigest()[0:6]
 
 用户state由余额和电话号码组成，使用  ',' 分隔
 
-- 订单state由单号（string），发起人公钥，接受人公钥，驿站地址，收货地址，取货号，金额，订单状态组成，使用  ',' 分隔
+- 订单state
+
+由单号（string），发起人公钥，接受人公钥，驿站地址，收货地址，取货号，金额，订单状态组成，使用  ',' 分隔
 
 ## 4.transaction and its payload
 
