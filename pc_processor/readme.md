@@ -32,7 +32,7 @@ payload.py用于转换交易的payload
 
   1. 可以多次使用init交易(之后会引入设置state或者通过创世块解决)
  
-  2. 错误的payload格式可能会导致验证器崩溃(崩溃解决方案:ctrl+c停止validator,main.py,devmode-engine-rust) 
+  2. 错误的payload格式可能会导致验证器崩溃(崩溃解决方案:ctrl+c停止validator,main.py,devmode-engine-rust,然后重启) 
   
   
 ## 暂不支持的功能
