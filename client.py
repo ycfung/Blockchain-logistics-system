@@ -17,11 +17,9 @@ from sawtooth_sdk.protobuf.batch_pb2 import BatchList
 from sawtooth_sdk.protobuf.batch_pb2 import BatchHeader
 from sawtooth_sdk.protobuf.batch_pb2 import Batch
 
-from sawtooth_xo.xo_exceptions import XoException
 
-from pc_processor.state import make_oder_address
-from pc_processor.state import make_user_address
 
+from pc_processor.state import *
 
 def _sha512(data):
     return hashlib.sha512(data).hexdigest()
@@ -42,14 +40,14 @@ class Client:
             with open(keyfile) as fd:
                 private_key_str = fd.read().strip()
         except OSError as err:
-            raise XoException(
+            raise Exception(
                 'Failed to read private key {}: {}'.format(
                     keyfile, str(err)))
 
         try:
             private_key = Secp256k1PrivateKey.from_hex(private_key_str)
         except ParseError as e:
-            raise XoException(
+            raise Exception(
                 'Unable to load private key: {}'.format(str(e)))
 
         self._signer = CryptoFactory(create_context('secp256k1')) \
@@ -65,7 +63,7 @@ class Client:
                 auth_password=auth_password)
             return yaml.safe_load(result)['data'][0]['status']
         except BaseException as err:
-            raise XoException(err)
+            raise Exception(err)
 
 
     def _send_request(self,
@@ -97,26 +95,29 @@ class Client:
                 result = requests.get(url, headers=headers)
 
             if result.status_code == 404:
-                raise XoException("No such game: {}".format(name))
+                raise Exception("No such game: {}".format(name))
 
             if not result.ok:
-                raise XoException("Error {}: {}".format(
+                raise Exception("Error {}: {}".format(
                     result.status_code, result.reason))
 
         except requests.ConnectionError as err:
-            raise XoException(
+            raise Exception(
                 'Failed to connect to {}: {}'.format(url, str(err)))
 
         except BaseException as err:
-            raise XoException(err)
+            raise Exception(err)
 
         return result.text
 
 
     def send_txn(self,
                      payload,
-                     number=None,
+                     order_numbers=None,
                      anotherUser=None,
+                     setting = False,
+                     station = None,
+                     mobiles = None,
                      wait=None,
                      auth_user=None,
                      auth_password=None):
@@ -126,10 +127,19 @@ class Client:
 
         change_adress = [make_user_address(self._signer.get_public_key().as_hex())]
 
-        if number is not None:
-            change_adress.append(make_oder_address(number))
+        if order_numbers is not None:
+            for o in order_numbers:
+                change_adress.append(make_oder_address(o))
         if anotherUser is not None:
             change_adress.append(make_user_address(anotherUser))
+        if setting:
+            change_adress.append(SETTING_ADDRESS)
+        if station is not None:
+            change_adress.append(make_station_adress(station))
+            print(make_station_adress(station))
+        if mobiles is not None:
+            for m in mobiles:
+                change_adress.append(make_mobile_adress(m))
 
         header = TransactionHeader(
             signer_public_key=self._signer.get_public_key().as_hex(),
