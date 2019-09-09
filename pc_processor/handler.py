@@ -11,7 +11,6 @@ import json
 
 from pc_processor.state import *
 
-from pc_processor.payload import *
 
 LOGGER = logging.getLogger(__name__)
 
