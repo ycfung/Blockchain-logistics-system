@@ -98,8 +98,8 @@ class RequestError(Exception):
     def __str__(self):
         return "Http State Code:"+repr(self.statu)
 
-
+'''
 vc=ViewConditions('http://127.0.0.1:8008')
 state=vc.getState(make_mobile_address("13160606060"))
 print(state)
-
+'''
