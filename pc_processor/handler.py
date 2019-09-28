@@ -32,6 +32,7 @@ class PCTransactionHandler(TransactionHandler):
     def apply(self, transaction, context):
 
         LOGGER.info('try to apply an transaction')
+        print('try to apply an transaction')
 
         header = transaction.header
         signer = header.signer_public_key
@@ -232,6 +233,10 @@ class PCTransactionHandler(TransactionHandler):
 
         except KeyError as e:
             raise InvalidTransaction('missing key :' + str(e))
+
+        except Exception as e:
+            raise InvalidTransaction('occur error while try to aplly transaction : '+str(e))
+            
 
 
         '''old version without using json
