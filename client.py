@@ -1,5 +1,3 @@
-import hashlib
-import base64
 from base64 import b64encode
 import time
 import random
@@ -17,35 +15,31 @@ from sawtooth_sdk.protobuf.batch_pb2 import BatchList
 from sawtooth_sdk.protobuf.batch_pb2 import BatchHeader
 from sawtooth_sdk.protobuf.batch_pb2 import Batch
 
+from django_test.sawtooth_client.state import *
 
-
-from pc_processor.state import *
 
 def _sha512(data):
     return hashlib.sha512(data).hexdigest()
 
 
-
-
 class Client:
-    def __init__(self, base_url, keyfile=None):
+    def __init__(self, base_url, pri_key_str=None):
 
         self._base_url = base_url
 
-        if keyfile is None:
+        if pri_key_str is None:
             self._signer = None
             return
 
         try:
-            with open(keyfile) as fd:
-                private_key_str = fd.read().strip()
+            self.private_key_str = pri_key_str
         except OSError as err:
             raise Exception(
                 'Failed to read private key {}: {}'.format(
-                    keyfile, str(err)))
+                    pri_key_str, str(err)))
 
         try:
-            private_key = Secp256k1PrivateKey.from_hex(private_key_str)
+            private_key = Secp256k1PrivateKey.from_hex(self.private_key_str)
         except ParseError as e:
             raise Exception(
                 'Unable to load private key: {}'.format(str(e)))
@@ -53,6 +47,7 @@ class Client:
         self._signer = CryptoFactory(create_context('secp256k1')) \
             .new_signer(private_key)
 
+        self.public_key = self._signer.get_public_key().as_hex()
 
 
     def _get_status(self, batch_id, wait, auth_user=None, auth_password=None):
@@ -64,7 +59,6 @@ class Client:
             return yaml.safe_load(result)['data'][0]['status']
         except BaseException as err:
             raise Exception(err)
-
 
     def _send_request(self,
                       suffix,
@@ -110,17 +104,16 @@ class Client:
 
         return result.text
 
-
     def send_txn(self,
-                     payload,
-                     order_numbers=None,
-                     anotherUser=None,
-                     setting = False,
-                     station = None,
-                     mobiles = None,
-                     wait=None,
-                     auth_user=None,
-                     auth_password=None):
+                 payload,
+                 order_numbers=None,
+                 anotherUser=None,
+                 setting=False,
+                 station=None,
+                 mobiles=None,
+                 wait=None,
+                 auth_user=None,
+                 auth_password=None):
         # Serialization is just a delimited utf-8 encoded string
 
         # Construct the address
@@ -190,7 +183,6 @@ class Client:
             'application/octet-stream',
             auth_user=auth_user,
             auth_password=auth_password)
-
 
     def _create_batch_list(self, transactions):
         transaction_signatures = [t.header_signature for t in transactions]
