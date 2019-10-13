@@ -1,4 +1,5 @@
 from django_test.sawtooth_client.view import *
+import hashlib
 
 PC_NAMESPACE = hashlib.sha512('pacel_chain'.encode("utf-8")).hexdigest()[0:6]
 USER_NAMESPACE = hashlib.sha512('user_state'.encode("utf-8")).hexdigest()[0:4]
@@ -13,7 +14,7 @@ def make_user_address(public_key):
     return PC_NAMESPACE + USER_NAMESPACE + public_key[-60:]
 
 
-def make_oder_address(oder_number):
+def make_order_address(oder_number):
     return PC_NAMESPACE + ODER_NAMESPACE + hashlib.sha512(oder_number.encode("utf-8")).hexdigest()[-60:]
 
 
@@ -121,4 +122,5 @@ def get_transaction_condition(mobile):
 
 if __name__ == '__main__':
     vc = ViewConditions(rest_api_addr)
-    print(vc.getStates())
+    x = make_order_address('002')
+    print((vc.getState(x)))
