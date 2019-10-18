@@ -7,7 +7,7 @@ from sawtooth_sdk.processor.exceptions import InternalError
 PC_NAMESPACE = hashlib.sha512('pacel_chain'.encode("utf-8")).hexdigest()[0:6]
 
 USER_NAMEPCACE = hashlib.sha512('user_state'.encode("utf-8")).hexdigest()[0:4]
-ODER_NAMESPACE = hashlib.sha512('oder_state'.encode("utf-8")).hexdigest()[0:4]
+ORDER_NAMESPACE = hashlib.sha512('order_state'.encode("utf-8")).hexdigest()[0:4]
 
 
 CONFIG_ADDRESS = PC_NAMESPACE
@@ -15,13 +15,13 @@ CONFIG_ADDRESS = PC_NAMESPACE
 def make_user_address(public_key):
     return PC_NAMESPACE + USER_NAMEPCACE + public_key[-60:]
 
-def make_oder_address(oder_number):
-    return PC_NAMESPACE + ODER_NAMESPACE + hashlib.sha512(oder_number.encode("utf-8")).hexdigest()[-60:]
+def make_order_address(order_number):
+    return PC_NAMESPACE + ORDER_NAMESPACE + hashlib.sha512(order_number.encode("utf-8")).hexdigest()[-60:]
 
-def make_station_adress(station):
+def make_station_address(station):
     return PC_NAMESPACE + hashlib.sha512(station.encode('utf-8')).hexdigest()[-64:]
 
-def make_mobile_adress(mobile):
+def make_mobile_address(mobile):
     return PC_NAMESPACE + hashlib.sha512(mobile.encode('utf-8')).hexdigest()[-64:]
 
 
@@ -35,7 +35,7 @@ class MobileState:
         self._address_cache = {}
 
     def get_state(self,mobile):
-        address = make_mobile_adress(mobile)
+        address = make_mobile_address(mobile)
         if address in self._address_cache:
             return self._address_cache[address]
 
@@ -46,7 +46,7 @@ class MobileState:
             return json.loads(datas[0].data.decode())
 
     def add_order(self,mobile,order_numbers):
-        address = make_mobile_adress(mobile)
+        address = make_mobile_address(mobile)
 
         if address in self._address_cache:
             state = self._address_cache[address]
@@ -63,7 +63,7 @@ class MobileState:
 
     def add_accepted_order(self,mobile,order_numbers):
 
-        address = make_mobile_adress(mobile)
+        address = make_mobile_address(mobile)
 
         if address in self._address_cache:
             state = self._address_cache[address]
@@ -85,7 +85,7 @@ class StationState:
         self._address_cache = {}
 
     def get_state(self,station):
-        address = make_station_adress(station)
+        address = make_station_address(station)
 
         if address in self._address_cache:
             return self._address_cache[address]
@@ -99,7 +99,7 @@ class StationState:
 
     def add_key(self,station,pub_key):
 
-        address = make_station_adress(station)
+        address = make_station_address(station)
 
 
         state = self.get_state(station)
@@ -113,7 +113,7 @@ class StationState:
 
     def check_authority(self,station,pub_key):
 
-        address = make_station_adress(station)
+        address = make_station_address(station)
 
         state = self.get_state(station)
 
@@ -231,7 +231,7 @@ class OrderState:
         self._address_cache = {}
 
     def get_order(self,order_number):
-        address = make_oder_address(order_number)
+        address = make_order_address(order_number)
         if address in self._address_cache:
             return self._address_cache[address]
         else:
@@ -244,7 +244,7 @@ class OrderState:
 
     def _set_order(self, order):
 
-        address = make_oder_address(order['order_number'])
+        address = make_order_address(order['order_number'])
 
         self._address_cache[address] = order
         self._context.set_state({address:json.dumps(order).encode()},timeout = self.TIMEOUT)
@@ -311,7 +311,7 @@ class OrderState:
 
 
     def delete_order(self,order_number):
-        address = make_oder_address(order_number)
+        address = make_order_address(order_number)
         if self._address_cache[address]:
             del self._address_cache[address]
 

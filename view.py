@@ -58,6 +58,27 @@ class ViewConditions:
         for x in r_json['data']:
             transactions.append(x)
         return transactions
+    
+    def getApply(self):
+        applys = []
+        accepteds = []
+        transactions = self.getTransactions();
+        for t in transactions:
+            print(t['payload'])
+            print(str(base64.b64decode(t['payload'])))
+            try:
+                payload = json.loads(str(base64.b64decode(t['payload']))[2:-1])
+                if payload['action'] == 'apply':
+                    applys.append(payload['order_number'])
+                if payload['action'] == 'accept':
+                    accepteds.append(payload['order_number'])
+            except:
+                continue;
+        print(applys)
+        print(accepteds)    
+        for ac in accepteds:
+            applys.remove(ac)
+        return applys
 
     def getTransaction(self, transaction_id):
         return self._get_warp(url=self.url + '/transactions/' + str(transaction_id))
