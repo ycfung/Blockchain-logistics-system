@@ -8,5 +8,6 @@ def gen_random_key_str():
     return private_key_str
 
 
+
 if __name__ == '__main__':
     print(gen_random_key_str())
