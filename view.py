@@ -64,8 +64,6 @@ class ViewConditions:
         accepteds = []
         transactions = self.getTransactions();
         for t in transactions:
-            print(t['payload'])
-            print(str(base64.b64decode(t['payload'])))
             try:
                 payload = json.loads(str(base64.b64decode(t['payload']))[2:-1])
                 if payload['action'] == 'apply':
@@ -105,8 +103,6 @@ class ApplyPage:
         self.applys = []
         self.accepteds = accepteds
         for t in transactions:
-            print(t['payload'])
-            print(str(base64.b64decode(t['payload'])))
             try:
                 payload = json.loads(str(base64.b64decode(t['payload']))[2:-1])
                 if payload['action'] == 'apply':
