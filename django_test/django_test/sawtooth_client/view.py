@@ -32,17 +32,17 @@ class ViewConditions:
         self.url = url
 
     def getBlocks(self):
-        r_json = self._get_warp(url=self.url + '/blocks')
+        r_json = self.get_warp(url=self.url + '/blocks')
         blocks = []
         for x in r_json['data']:
             blocks.append(x)
         return blocks
 
     def getBlock(self, id):
-        return self._get_warp(url=self.url + '/blocks/' + str(id))
+        return self.get_warp(url=self.url + '/blocks/' + str(id))
 
     def getStates(self):
-        r_json = self._get_warp(url=self.url + '/state')
+        r_json = self.get_warp(url=self.url + '/state')
         states = []
         for x in r_json['data']:
             x['data'] = base64.b64decode(x['data'])
@@ -50,10 +50,10 @@ class ViewConditions:
         return states
 
     def getState(self, address):
-        return base64.b64decode(self._get_warp(url=self.url + '/state/' + str(address))['data'])
+        return base64.b64decode(self.get_warp(url=self.url + '/state/' + str(address))['data'])
 
     def getTransactions(self):
-        r_json = self._get_warp(url=self.url + '/transactions')
+        r_json = self.get_warp(url=self.url + '/transactions')
         transactions = []
         for x in r_json['data']:
             transactions.append(x)
@@ -64,8 +64,6 @@ class ViewConditions:
         accepteds = []
         transactions = self.getTransactions();
         for t in transactions:
-            print(t['payload'])
-            print(str(base64.b64decode(t['payload'])))
             try:
                 payload = json.loads(str(base64.b64decode(t['payload']))[2:-1])
                 if payload['action'] == 'apply':
@@ -74,22 +72,54 @@ class ViewConditions:
                     accepteds.append(payload['order_number'])
             except:
                 continue;
-        print(applys)
-        print(accepteds)
         for ac in accepteds:
             applys.remove(ac)
         return applys
 
-    def getTransaction(self, transaction_id):
-        return self._get_warp(url=self.url + '/transactions/' + str(transaction_id))
+    def getApplyPage(self, limit):
+        r_json = self.get_warp(url=self.url + '/transactions', para={'limit': limit})
+        return ApplyPage(self, r_json)
 
-    def _get_warp(self, url, para=set()):
+    def getTransaction(self, transaction_id):
+        return self.get_warp(url=self.url + '/transactions/' + str(transaction_id))
+
+    def get_warp(self, url, para=set()):
         r = requests.get(url=url, params=para)
         if r.status_code == 200:
             r_json = r.json()
             return r_json
         else:
             raise RequestError(r.status_code)
+
+
+class ApplyPage:
+    def __init__(self, vc, page_json, accepteds=[]):
+        self.vc = vc
+        self.limit = page_json["paging"]["limit"]
+        self.next_page_url = page_json["paging"]["next"]
+        transactions = []
+        for x in page_json['data']:
+            transactions.append(x)
+
+        self.applys = []
+        self.accepteds = accepteds
+        for t in transactions:
+            try:
+                payload = json.loads(str(base64.b64decode(t['payload']))[2:-1])
+                if payload['action'] == 'apply':
+                    self.applys.append(payload['order_number'])
+                if payload['action'] == 'accept':
+                    accepteds.append(payload['order_number'])
+            except:
+                continue;
+        for ac in self.accepteds:
+            self.applys.remove(ac)
+
+    def get_next_page(self):
+        return ApplyPage(self.vc, self.vc.get_warp(self.next_page_url, {'limit': self.limit}), self.accepteds)
+
+    def get_applys(self):
+        return self.applys
 
 
 def sortByKey(transaction, key):

@@ -142,6 +142,14 @@ class method:
         except RequestError as err:
             return err.status
 
+    # 返回所有公开交易
+    def get_apply(self):
+        vc = ViewConditions(rest_api_addr)
+        d = {'applys': vc.getApply()}
+        return str(d)
+
 
 if __name__ == '__main__':
-    print(method.get_public_key('e8e8fd3e759b5cfd252c142f2c3d8526e32de612d42677933d9a255ec78298ec'))
+    vc = ViewConditions(rest_api_addr)
+    x = vc.getApply()
+    print(x)
