@@ -79,6 +79,10 @@ class ViewConditions:
     def getApplyPage(self,limit):
         r_json = self.get_warp(url=self.url + '/transactions',para={'limit':limit})
         return ApplyPage(self,r_json)
+    
+    def getApplyPage(self,next_page_url,accepteds)
+        r_json = self.get_warp(url=next_page_url)
+        return ApplyPage(self,r_json,accepteds)
 
     def getTransaction(self, transaction_id):
         return self.get_warp(url=self.url + '/transactions/' + str(transaction_id))
@@ -112,6 +116,7 @@ class ApplyPage:
             except:
                 continue;    
         for ac in self.accepteds:
+            self.accept.remove(ac)
             self.applys.remove(ac)
 
     def get_next_page(self):
@@ -119,6 +124,12 @@ class ApplyPage:
 
     def get_applys(self):
         return self.applys
+
+    def get_accepts(self):
+        return self.accepteds
+
+    def get_next_page_url:
+        return self.next_page_url
 
         
 
