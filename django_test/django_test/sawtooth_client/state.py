@@ -5,7 +5,7 @@ import json
 PC_NAMESPACE = hashlib.sha512('pacel_chain'.encode("utf-8")).hexdigest()[0:6]
 
 USER_NAMEPCACE = hashlib.sha512('user_state'.encode("utf-8")).hexdigest()[0:4]
-ODER_NAMESPACE = hashlib.sha512('oder_state'.encode("utf-8")).hexdigest()[0:4]
+ODER_NAMESPACE = hashlib.sha512('order_state'.encode("utf-8")).hexdigest()[0:4]
 
 
 CONFIG_ADDRESS = PC_NAMESPACE
@@ -271,7 +271,7 @@ class OrderState:
 
         return True
 
-    def apply_order(self,order_number,coin,destionation):
+    def apply_order(self,order_number,coin,destination):
 
         order = self.get_order(order_number)
 
@@ -282,7 +282,7 @@ class OrderState:
             return False
         else:
             order['coin'] = coin
-            order['destionation'] = destionation
+            order['destination'] = destination
             order['state'] = 'apply'
 
         self._set_order(order)
@@ -314,3 +314,4 @@ class OrderState:
             del self._address_cache[address]
 
         self._context.delete_state([address],timeout = self.TIMEOUT)
+

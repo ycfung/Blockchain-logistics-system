@@ -10,12 +10,13 @@ def hello(request):
         function = request.POST['func']
         f = {'status': 'success', 'data': 'this is data you POST'}
         try:
+            m = method()
             if (len(request.POST) == 2):
-                f = str(getattr(method, function)(request.POST['arg1']))
+                f = str(getattr(m, function)(request.POST['arg1']))
             elif (len(request.POST) == 3):
-                f = str(getattr(method, function)(request.POST['arg1'], request.POST['arg2']))
+                f = str(getattr(m, function)(request.POST['arg1'], request.POST['arg2']))
             elif (len(request.POST) == 4):
-                f = str(getattr(method, function)(request.POST['arg1'], request.POST['arg2']), request.POST['arg3'])
+                f = str(getattr(m, function)(request.POST['arg1'], request.POST['arg2']), request.POST['arg3'])
         except TypeError:
             f = {'status': 'failed', 'message': 'Wrong argument(s)'}
         return HttpResponse(json.dumps(f), content_type='application/json')
@@ -25,14 +26,15 @@ def hello(request):
         function = request.GET['func']
         f = {'status': 'success', 'message': 'this is a success message'}
         try:
+            m = method()
             if (len(request.GET) == 1):
-                f = getattr(method, function)(method)
+                f = getattr(m, function)(m)
             if (len(request.GET) == 2):
-                f = str(getattr(method, function)(request.GET['arg1']))
+                f = str(getattr(m, function)(request.GET['arg1']))
             elif (len(request.GET) == 3):
-                f = str(getattr(method, function)(request.GET['arg1'], request.GET['arg2']))
+                f = str(getattr(m, function)(request.GET['arg1'], request.GET['arg2']))
             elif (len(request.GET) == 4):
-                f = str(getattr(method, function)(request.GET['arg1'], request.GET['arg2']), request.GET['arg3'])
+                f = str(getattr(m, function)(request.GET['arg1'], request.GET['arg2']), request.GET['arg3'])
         except TypeError:
             f = {'status': 'failed', 'message': 'Wrong argument(s)'}
         return HttpResponse(json.dumps(f), content_type='application/json')

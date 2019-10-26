@@ -1,9 +1,10 @@
 from django_test.sawtooth_client.client import *
 import base64
 
+
 PC_NAMESPACE = hashlib.sha512('pacel_chain'.encode("utf-8")).hexdigest()[0:6]
 USER_NAMESPACE = hashlib.sha512('user_state'.encode("utf-8")).hexdigest()[0:4]
-ODER_NAMESPACE = hashlib.sha512('oder_state'.encode("utf-8")).hexdigest()[0:4]
+ODER_NAMESPACE = hashlib.sha512('order_state'.encode("utf-8")).hexdigest()[0:4]
 
 rest_api_addr = "http://127.0.0.1:8008"
 
@@ -25,7 +26,6 @@ def make_mobile_address(mobile):
 
 
 SETTING_ADDRESS = PC_NAMESPACE + "0000000000000000000000000000000000000000000000000000000000000000"
-
 
 class ViewConditions:
     def __init__(self, url):
@@ -58,7 +58,7 @@ class ViewConditions:
         for x in r_json['data']:
             transactions.append(x)
         return transactions
-
+    
     def getApply(self):
         applys = []
         accepteds = []
@@ -71,14 +71,18 @@ class ViewConditions:
                 if payload['action'] == 'accept':
                     accepteds.append(payload['order_number'])
             except:
-                continue;
+                continue;   
         for ac in accepteds:
             applys.remove(ac)
         return applys
 
-    def getApplyPage(self, limit):
-        r_json = self.get_warp(url=self.url + '/transactions', para={'limit': limit})
-        return ApplyPage(self, r_json)
+    def getApplyPage_limit(self,limit):
+        r_json = self.get_warp(url=self.url + '/transactions',para={'limit':limit})
+        return ApplyPage(self,r_json)
+    
+    def getApplyPage(self,next_page_url,accepteds):
+        r_json = self.get_warp(url=next_page_url)
+        return ApplyPage(self,r_json,accepteds)
 
     def getTransaction(self, transaction_id):
         return self.get_warp(url=self.url + '/transactions/' + str(transaction_id))
@@ -91,16 +95,15 @@ class ViewConditions:
         else:
             raise RequestError(r.status_code)
 
-
 class ApplyPage:
-    def __init__(self, vc, page_json, accepteds=[]):
+    def __init__(self,vc,page_json,accepteds = []):
         self.vc = vc
         self.limit = page_json["paging"]["limit"]
         self.next_page_url = page_json["paging"]["next"]
         transactions = []
         for x in page_json['data']:
             transactions.append(x)
-
+        
         self.applys = []
         self.accepteds = accepteds
         for t in transactions:
@@ -111,16 +114,24 @@ class ApplyPage:
                 if payload['action'] == 'accept':
                     accepteds.append(payload['order_number'])
             except:
-                continue;
+                continue;    
         for ac in self.accepteds:
+            self.accept.remove(ac)
             self.applys.remove(ac)
 
     def get_next_page(self):
-        return ApplyPage(self.vc, self.vc.get_warp(self.next_page_url, {'limit': self.limit}), self.accepteds)
+        return ApplyPage(self.vc,self.vc.get_warp(self.next_page_url,{'limit':self.limit}),self.accepteds)
 
     def get_applys(self):
         return self.applys
 
+    def get_accepts(self):
+        return self.accepteds
+
+    def get_next_page_url(self):
+        return self.next_page_url
+
+        
 
 def sortByKey(transaction, key):
     results = []
@@ -160,3 +171,4 @@ class RequestError(Exception):
 
     def __str__(self):
         return "Http State Code: " + repr(self.status)
+
