@@ -1,0 +1,20 @@
+<!--pages/untaken/untaken.wxml-->
+<view class="main">
+<view class="page">
+    <view class="page_bd">
+      <view class="weui-cells__title">全部待取货物</view>
+      <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell weui-cell_example" >
+                <view class="weui-cell__bd">货单号</view>
+                <view class="weui-cell__ft">入库时间</view>
+            </view>
+       <block wx:for='{{packetList}}' wx:for-index="idx" wx:key='{{item.id}}'>
+              <view class="weui-cell weui-cell_example">
+                <view class="weui-cell__bd">{{item.pNumber}}</view>
+                <view class="weui-cell__ft">{{item.warn}}{{item.inTime}}</view>
+              </view>
+            </block>     
+      </view>
+    </view>
+  </view> 
+</view>

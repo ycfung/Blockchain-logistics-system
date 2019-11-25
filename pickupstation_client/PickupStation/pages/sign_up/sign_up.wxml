@@ -1,0 +1,51 @@
+<!--pages/sign_up/sign_up.wxml-->
+<form bindsubmit="formSubmit" bindreset="formReset">
+<view class="weui-cells__title">信息</view>
+<view class="weui-cells weui-cells_after-title">
+    <view class="weui-cell ">
+        <view class="weui-cell__hd">
+            <view class="weui-label">快递点ID</view>
+        </view>
+        <view class="weui-cell__bd">
+            <input name="stationID" class="weui-input" placeholder="请输入快递点名称"/>
+        </view>
+    </view>
+    <view class="weui-cell ">
+        <view class="weui-cell__hd">
+            <view class="weui-label">职工号</view>
+        </view>
+        <view class="weui-cell__bd">
+            <input name="userId"class="weui-input" placeholder="请输入职工号" />
+        </view>
+    </view>
+</view>
+
+<view class="weui-cells__title">申请简介</view>
+<view class="weui-cells weui-cells_after-title">
+<view class="weui-cell">
+    <view class="weui-cell__bd">
+        <textarea name="application" class="weui-textarea" placeholder="请输入文本" style="height: 3.3em" />
+        <view class="weui-textarea-counter">0/200</view>
+    </view>
+</view>
+</view>
+
+
+<checkbox-group bindchange="bindAgreeChange">
+  <label class="weui-agree" for="weuiAgree">
+      <view class="weui-agree__text">
+          <checkbox class="weui-agree__checkbox" id="weuiAgree" value="agree" checked="{{isAgree}}" />
+          <view class="weui-agree__checkbox-icon">
+              <icon class="weui-agree__checkbox-icon-check" type="success_no_circle" size="9" wx:if="{{isAgree}}"></icon>
+          </view>
+          阅读并同意<navigator url="" class="weui-agree__link">《相关条款》</navigator>
+      </view>
+  </label>
+</checkbox-group>
+<view class="weui-btn-area">
+  <button class="weui-btn" type="primary" form-type="submit" >提交
+  </button>
+  <button class="weui-btn" type="default" form-type="reset" >重置
+  </button>
+</view>
+</form>
