@@ -1,0 +1,47 @@
+<view class="weui-cells__title">历史记录</view>
+<view class="main">
+<view class="page">
+    <view class="page_bd">
+
+
+    <view  class="weui-cell weui-cell_access" hover-class="weui-cell_active"   bindtap="showitem1">
+      <navigator url="../Initiate_order/Initiate_order" class="weui-cell__bd">发起的订单</navigator>
+      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </view>
+    </view>
+</view>
+<view class="page">
+    <view class="page_bd">
+
+
+
+
+      <view  class="weui-cell weui-cell_access" hover-class="weui-cell_active"   bindtap="showitem2">
+      <navigator class="weui-cell__bd" url="../Accept_orders/Accept_orders">接受的订单</navigator>
+      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </view>
+
+
+
+
+
+    </view>
+</view>
+</view>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

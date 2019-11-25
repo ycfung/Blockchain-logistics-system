@@ -1,0 +1,107 @@
+<!--pages/info/info.wxml-->
+<view class="weui-cells__title">发起新请求 当前余额</view>
+<form bindsubmit="formSubmit">
+<view class="weui-cells weui-cells_after-title">
+
+  <view class="weui-cell ">
+    <view class="weui-cell__hd">
+      <view class="weui-label">费用</view>
+    </view>
+    <view class="weui-cell__bd">
+      <input class="weui-input" placeholder="请输入费用" name="cost"/>
+    </view>
+  </view>
+
+  <!-- <view class="weui-cell ">
+    <view class="weui-cell__hd">
+      <view class="weui-label">
+      <view class="origin">
+<navigator class="inter-origin" url="../from_position/from_position">
+快递发货点
+</navigator>
+</view></view>
+    </view>
+    <view class="weui-cell__bd">
+      <input class="weui-input" placeholder="请输入快递所在位置" value="{{from_position}}" name="from_position"/>
+    </view>
+  </view> -->
+
+    <view class="weui-cell ">
+    <view class="weui-cell__hd">
+      <view class="weui-label">
+            <view class="origin">
+<navigator class="inter-origin" url="../to_position/to_position">
+快递送达地
+</navigator>
+</view>
+      </view>
+    </view>
+    <view class="weui-cell__bd">
+      <input class="weui-input" placeholder="请输入收件地址" value="{{to_position}}" name="to_position"/>
+    </view>
+  </view>
+            <view class="weui-cell weui-cell_select">
+                <view class="weui-cell__hd weui-cell__hd_in-select-after">
+                    <view class="weui-label">快递重量</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <picker bindchange="bindCountryChange" value="{{weightIndex}}" range="{{weight}}">
+                        <input class="weui-select weui-select_in-select-after" value="{{weight[weightIndex]}}" name="weight"></input>
+                    </picker>
+                </view>
+            </view>
+
+
+
+
+            <view class="weui-cell ">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">期望送达日期</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <picker mode="date" value="{{date}}" start="2017-09-18" end="2020-09-01" bindchange="bindDateChange">
+                        <input class="weui-input" value="{{date}}" name="date"></input>
+                    </picker>
+                </view>
+            </view>
+                        <view class="weui-cell ">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">期望送达时间</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <picker mode="time" value="{{time}}" start="09:01" end="23:00" bindchange="bindTimeChange">
+                        <input class="weui-input" value="{{time}}" name="time"></input>
+                    </picker>
+                </view>
+            </view>
+
+
+  <view class="weui-cell ">
+    <view class="weui-cell__hd">
+      <view class="weui-label">备注</view>
+    </view>
+    <view class="weui-cell__bd">
+      <input class="weui-input" placeholder="请输入备注" />
+    </view>
+  </view>
+
+  <!-- <view class="weui-cell ">
+    <view class="weui-cell__hd">
+      <view class="weui-label">取货凭证</view>
+    </view>
+    <view class="weui-cell__bd">
+     
+      <input class="weui-input" placeholder="请输入或上传取货凭证" name="credentials"/>
+    </view>
+  </view> -->
+   <!-- 这里按需求改一下凭证类型 -->
+
+</view>
+
+<view class="page__hd page__bd page__bd_spacing button-sp-area page__desc">
+  <button class="weui-btn" type="primary" form-type="submit">上传</button>
+  <button class="weui-btn" type="default" bindtap="goToIndexPage">还原</button>
+</view>
+
+
+</form>

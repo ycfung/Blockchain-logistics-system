@@ -1,0 +1,60 @@
+   <scroll-view class='scroll-view-container' scroll-y='{{true}}' bindscrolltolower='scrollToLower' bindscrolltoupper='scrollToUpper' lower-threshold='30' upper-threshold='0'>
+<view class="page">
+    <view class="page__hd">
+    
+        <view class="page__title">当前订单</view>
+        <view class="page__desc">接受的订单</view>
+    </view>
+    
+    <block wx:for='{{articles}}' wx:key='{{item.id}}' wx:for-index="index">
+    <view class="page__bd">
+        <view class="weui-form-preview">
+            <view class="weui-form-preview__hd">
+                <view class="weui-form-preview__item">
+                    <view class="weui-form-preview__label">费用</view>
+                    <view class="weui-form-preview__value_in-hd">{{item.money}}</view>
+                </view>
+            </view>
+            <view class="weui-form-preview__bd">
+                <view class="weui-form-preview__item">
+                    <view class="weui-form-preview__label">快递编号</view>
+                    <view class="weui-form-preview__value">{{item.pnumber}}</view>
+                </view>
+                <view class="weui-form-preview__item">
+                    <view class="weui-form-preview__label">预期送达时间</view>
+                    <view class="weui-form-preview__value">{{item.time}}</view>
+                </view>
+                <view class="weui-form-preview__item">
+                    <view class="weui-form-preview__label">快递位置</view>
+                    <view class="weui-form-preview__value">{{item.from_position}}</view>
+                </view>
+                <view class="weui-form-preview__item">
+                    <view class="weui-form-preview__label">快递送达位置</view>
+                    <view class="weui-form-preview__value">{{item.to_position}}</view>
+                </view>
+                <view class="weui-form-preview__item" >
+                    <view class="weui-form-preview__label">收件人姓名</view>
+                    <view class="weui-form-preview__value">{{item.to_name}}</view>
+                </view>
+                <view class="weui-form-preview__item">
+                    <view class="weui-form-preview__label">收件人电话</view>
+                    <view class="weui-form-preview__value">{{item.to_tele}}</view>
+                </view>
+                <view class="weui-form-preview__item">
+                    <view class="weui-form-preview__label">备注</view>
+                    <view class="weui-form-preview__value">很长很长的备注很长很长的备注很长很长的备注很长很长的备注很长很长的备注</view>
+                </view>
+            </view>
+            <view class="weui-form-preview__ft">
+                <navigator class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active" url="../success/success" bindtap="sure">确认送达</navigator>
+            </view>
+        </view>
+            </view>
+        </block>
+  
+
+</view>
+<view class='data-loading' hidden='{{hidden}}'>
+    数据加载中...
+  </view>
+</scroll-view> 

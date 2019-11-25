@@ -1,0 +1,52 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/logs/logs",
+    "pages/market/market",
+    "pages/new_order/new_order",
+    "pages/history/history",
+    "pages/info/info",
+    "pages/order_details/order_details",
+    "pages/Initiate_order/Initiate_order",
+    "pages/Accept_orders/Accept_orders",
+    "pages/Currently_initiated/Currently_initiated",
+    "pages/accepted_now/accepted_now",
+    "pages/untreated/untreated",
+    "pages/success/success"
+    
+
+    
+    
+  
+    
+  ],
+  "tabBar": {
+    "color": "#7f8389",
+    "selectedColor": "#09BB07",
+    "borderStyle": "black",
+    "backgroundColor": "#f7f7fa",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "我的",
+        "iconPath": "images/me.png",
+        "selectedIconPath": "images/me_selected.png"
+      },
+      {
+        "pagePath": "pages/market/market",
+        "text": "交易市场",
+        "iconPath": "images/homepage.png",
+        "selectedIconPath": "images/homepage_selected.png"
+      }
+          ]
+        },
+
+
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "black"
+  },
+  "sitemapLocation": "sitemap.json"
+}
