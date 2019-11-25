@@ -204,7 +204,7 @@
       <workItem from="1571404803630" duration="5829000" />
       <workItem from="1571930293942" duration="748000" />
       <workItem from="1572008849466" duration="2502000" />
-      <workItem from="1572075509635" duration="3164000" />
+      <workItem from="1572075509635" duration="11908000" />
     </task>
     <servers />
   </component>
@@ -230,7 +230,7 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/django_test$Test__django_test.coverage" NAME="Test: django_test Coverage Results" MODIFIED="1572077987112" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/django_test$manage.coverage" NAME="manage Coverage Results" MODIFIED="1570978504420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/django_test$test.coverage" NAME="test Coverage Results" MODIFIED="1572078461738" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/django_test/sawtooth_client" />
+    <SUITE FILE_PATH="coverage/django_test$test.coverage" NAME="test Coverage Results" MODIFIED="1574609050446" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/django_test/sawtooth_client" />
     <SUITE FILE_PATH="coverage/django_test$features.coverage" NAME="features Coverage Results" MODIFIED="1570963591178" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/django_test/sawtooth_client" />
   </component>
 </project>

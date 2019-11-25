@@ -14,9 +14,9 @@ def hello(request):
             if (len(request.POST) == 2):
                 f = str(getattr(m, function)(request.POST['arg1']))
             elif (len(request.POST) == 3):
-                f = str(getattr(m, function)(request.POST['arg1'], request.POST['arg2']))
+                f = getattr(m, function)(request.POST['arg1'], request.POST['arg2'])
             elif (len(request.POST) == 4):
-                f = str(getattr(m, function)(request.POST['arg1'], request.POST['arg2']), request.POST['arg3'])
+                f = getattr(m, function)(request.POST['arg1'], request.POST['arg2']), request.POST['arg3']
         except TypeError:
             f = {'status': 'failed', 'message': 'Wrong argument(s)'}
         return HttpResponse(json.dumps(f), content_type='application/json')
@@ -28,13 +28,13 @@ def hello(request):
         try:
             m = method()
             if (len(request.GET) == 1):
-                f = getattr(m, function)(m)
+                f = getattr(m, function)()
             if (len(request.GET) == 2):
-                f = str(getattr(m, function)(request.GET['arg1']))
+                f = getattr(m, function)(request.GET['arg1'])
             elif (len(request.GET) == 3):
-                f = str(getattr(m, function)(request.GET['arg1'], request.GET['arg2']))
+                f = getattr(m, function)(request.GET['arg1'], request.GET['arg2'])
             elif (len(request.GET) == 4):
-                f = str(getattr(m, function)(request.GET['arg1'], request.GET['arg2']), request.GET['arg3'])
+                f = getattr(m, function)(request.GET['arg1'], request.GET['arg2']), request.GET['arg3']
         except TypeError:
             f = {'status': 'failed', 'message': 'Wrong argument(s)'}
         return HttpResponse(json.dumps(f), content_type='application/json')

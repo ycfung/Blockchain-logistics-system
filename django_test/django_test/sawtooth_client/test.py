@@ -109,21 +109,21 @@ class method:
     def get_random_key(self):
         d = {}
         d['random_key'] = gen_random_key_str()
-        return str(d)
+        return d
 
     # 将私钥转为公钥
     def get_public_key(self, private_key_str):
         user = Client(rest_api_addr, pri_key_str=private_key_str)
         d = {}
         d['public_key'] = user.public_key
-        return str(d)
+        return d
 
     # 获取用户个人信息
     def get_user_info(self, user_private_key):
         try:
             user = Client(rest_api_addr, pri_key_str=user_private_key)
             vc = ViewConditions(rest_api_addr)
-            state = vc.getState(make_user_address(user.public_key))
+            state = vc.getState(make_user_address(user.public_key)).decode('utf-8')
             return state
         except RequestError as err:
             return err.status
@@ -132,17 +132,27 @@ class method:
     def get_transaction_condition(self, mobile):
         try:
             vc = ViewConditions(rest_api_addr)
-            state = vc.getState(make_mobile_address(mobile))
+            state = vc.getState(make_mobile_address(mobile)).decode('utf-8')
             return state
         except RequestError as err:
             return err.status
+
+    # 返回该用户被接受的订单号
+    def get_specific_orders(self, status, mobile):
+        m = method()
+        specific_orders = []
+        orders = json.loads(m.get_transaction_condition(mobile))["order_number"]
+        for i in orders:
+            if m.get_order_status(i)["state"] == status:
+                specific_orders.append(i)
+        return specific_orders
 
     # 通过单号查询交易状态
     def get_order_status(self, order_number):
         try:
             vc = ViewConditions(rest_api_addr)
-            state = vc.getState(make_order_address(order_number))
-            return state
+            state = vc.getState(make_order_address(order_number)).decode('utf-8')
+            return json.loads(state)
         except RequestError as err:
             return err.status
 
@@ -168,8 +178,19 @@ class method:
         d['accepts'] = page.get_accepts()
         return d
 
+    # 参数为订单号数组，返回订单详情数组
+    def get_orders_status(self, order_numbers):
+        order_numbers = json.loads(order_numbers)
+        m = method()
+        orders = []
+        for order in order_numbers:
+            payload = m.get_order_status(order)
+            orders.append(payload)
+        return orders
+
 
 if __name__ == '__main__':
+    m = method()
     # root.send_txn(json.dumps({'action':'init'}).encode(),setting = True)
     # method.sign_up('222222',client1.private_key_str)
     # method.sign_up('333333',client2.private_key_str)
@@ -177,18 +198,9 @@ if __name__ == '__main__':
     # method.initial_transfer(100,client1.public_key)
     # method.initial_transfer(100, client2.public_key)
     # method.initial_transfer(100, client3.public_key)
-    # method.authorize(client1.public_key,'beiyuan')
-    m = method()
-    page1 = m.get_apply_page()
-    url1 = page1['next_url']
-    accepts1 = page1['accepts']
-    #print(page1)
+    # m.authorize(client1.public_key,'beiyuan')
 
-    n = method()
-    page2 = n.get_apply_page_with_url(url1,accepts1)
-    url2 = page2['next_url']
-    accepts2 = page2['accepts']
-    print(page2)
+    # m.register_package(client1.private_key_str,'beiyuan','444444','666','666000')
 
-    o = method()
-    #print(o.get_apply_page_with_url(url2, accepts2)['open_requests'])
+    print(m.get_specific_orders('completed','333333'))
+
